@@ -27,11 +27,11 @@ services:
       - 27017:27017
     volumes:
       - /Users/lemonade/Documents/Instagram/my-moments-master/mongo:/data/db
-  neo4j:
-    image: neo4j:latest
-    ports:
-     - "7474:7474"
-     - "7687:7687"
+#  neo4j:
+#    image: neo4j:latest
+#    ports:
+#      - "7474:7474"
+#      - "7687:7687"
   cassandra:
     image: cassandra:latest
     ports:

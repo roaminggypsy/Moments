@@ -21,10 +21,11 @@ public class UserApi {
     @PostMapping("/users/followers")
     public ResponseEntity<?> follow(@RequestBody FollowRequest request) {
 
+        log.info(request.toString());
+
         log.info("received a follow request follow {} following {}",
                 request.getFollower().getUsername(),
                 request.getFollowing().getUsername());
-
 
         userService.follow(
                 User.builder()
@@ -60,7 +61,7 @@ public class UserApi {
 
     @GetMapping("/users/{usernameA}/following/{usernameB}")
     public ResponseEntity<?> isFollwoing(@PathVariable String usernameA, @PathVariable String usernameB) {
-        log.info("received request to check is user {} is following {}"
+        log.info("received request to check whether user {} is following {}"
                 , usernameA, usernameB);
 
         return ResponseEntity.ok(userService.isFollowing(usernameA, usernameB));
@@ -82,6 +83,11 @@ public class UserApi {
 
     @GetMapping("/users/{username}/following")
     public ResponseEntity<?> findFollowing(@PathVariable String username) {
+        for (User user : userService.findFollowing(username)) {
+            log.info(user.toString());
+            log.info(user.toString());
+            log.info(user.toString());
+        }
         return ResponseEntity.ok(userService.findFollowing(username));
     }
 

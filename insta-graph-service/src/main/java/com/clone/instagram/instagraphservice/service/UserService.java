@@ -61,7 +61,7 @@ public class UserService {
                                 String.format("user %s not exists", user.getUsername())));
     }
 
-    @Transactional
+    //@Transactional
     public User follow(User follower, User following) {
         log.info("user {} will follow {}",
                 follower.getUsername(), following.getUsername());
@@ -73,6 +73,8 @@ public class UserService {
                     return this.addUser(follower);
                 });
 
+        log.info("here");
+
         User savedFollowing = userRepository
                 .findByUserId(following.getUserId())
                 .orElseGet(() -> {
@@ -83,6 +85,8 @@ public class UserService {
         if(savedFollower.getFriendships() == null) {
             savedFollower.setFriendships(new HashSet<>());
         }
+
+        log.info("there");
 
         savedFollower
                 .getFriendships()

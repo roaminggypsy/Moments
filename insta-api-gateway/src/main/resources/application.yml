@@ -47,9 +47,6 @@ hystrix:
             timeoutInMilliseconds: 600000
 
 security:
-  basic:
-    enable: false
-
   jwt:
     uri: /auth/**
     header: Authorization

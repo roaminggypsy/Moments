@@ -34,6 +34,8 @@ public class PostApi {
                 .fromCurrentContextPath().path("/posts/{id}")
                 .buildAndExpand(post.getId()).toUri();
 
+        log.info(String.valueOf(ServletUriComponentsBuilder.fromCurrentContextPath().build()));
+
         return ResponseEntity
                 .created(location)
                 .body(new ApiResponse(true, "Post created successfully"));

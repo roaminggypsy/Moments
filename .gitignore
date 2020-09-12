@@ -24,3 +24,8 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+## Databases ##
+mongo
+images
+cassandra

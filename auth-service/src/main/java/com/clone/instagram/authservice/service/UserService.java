@@ -8,6 +8,8 @@ import com.clone.instagram.authservice.model.Role;
 import com.clone.instagram.authservice.repository.UserRepository;
 import com.clone.instagram.authservice.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
     private UserEventSender userEventSender;
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
@@ -31,12 +34,12 @@ public class UserService {
     }
 
     public List<User> findAll() {
-        log.info("retrieving all users");
+        logger.info("retrieving all users");
         return userRepository.findAll();
     }
 
     public Optional<User> findByUsername(String username) {
-        log.info("retrieving user {}", username);
+        logger.info("retrieving user {}", username);
         return userRepository.findByUsername(username);
     }
 
@@ -45,17 +48,17 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        log.info("registering user {}", user.getUsername());
+        logger.info("registering user {}", user.getUsername());
 
         if(userRepository.existsByUsername(user.getUsername())) {
-            log.warn("username {} already exists.", user.getUsername());
+            logger.warn("username {} already exists.", user.getUsername());
 
             throw new UsernameAlreadyExistsException(
                     String.format("username %s already exists", user.getUsername()));
         }
 
         if(userRepository.existsByEmail(user.getEmail())) {
-            log.warn("email {} already exists.", user.getEmail());
+            logger.warn("email {} already exists.", user.getEmail());
 
             throw new EmailAlreadyExistsException(
                     String.format("email %s already exists", user.getEmail()));
@@ -73,7 +76,7 @@ public class UserService {
     }
 
     public User updateProfilePicture(String uri, String id) {
-        log.info("update profile picture {} for user {}", uri, id);
+        logger.info("update profile picture {} for user {}", uri, id);
 
        return userRepository
                .findById(id)
