@@ -19,6 +19,7 @@ const request = options => {
 
   return fetch(options.url, options).then(response =>
     response.json().then(json => {
+      console.log(json);
       if (!response.ok) {
         return Promise.reject(json);
       }
@@ -139,6 +140,7 @@ export function follow(followRequest) {
   if (!localStorage.getItem(ACCESS_TOKEN)) {
     return Promise.reject("No access token set.");
   }
+  console.log('initialize follow request')
 
   return request({
     url: API_BASE_URL + "/graph/users/followers",

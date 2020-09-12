@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Slider from "react-slick";
 import "./discover.css";
 import { Card, Avatar, Button } from "antd";
-import { getAllUsers } from "../../util/ApiUtil";
+import { getAllUsers, follow } from "../../util/ApiUtil";
 import { ACCESS_TOKEN } from "../../common/constants";
 import LoadingIndicator from "../../common/LoadingIndicator";
 
@@ -19,10 +19,10 @@ class Discover extends Component {
       this.props.history.push("/login");
     }
 
-    this.loadAllUers();
+    this.loadAllUsers();
   };
 
-  loadAllUers = () => {
+  loadAllUsers = () => {
     this.setState({ isLoading: true });
 
     getAllUsers()
@@ -33,6 +33,11 @@ class Discover extends Component {
   handleOnCardClick = username => {
     this.props.history.push("/users/" + username);
   };
+
+  startFollow = user => {
+    const request = {follower:this.props.currentUser, following: user}
+    follow(request).then(r => console.log(r));
+  }
 
   render() {
     if (this.state.isLoading) {
@@ -70,7 +75,7 @@ class Discover extends Component {
                     </div>
                   }
                   actions={[
-                    <Button type="primary" className="follow-btn">
+                    <Button type="primary" className="follow-btn" onClick={() => this.startFollow(user)}>
                       Follow
                     </Button>
                   ]}
