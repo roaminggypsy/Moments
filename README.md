@@ -100,10 +100,19 @@ Add additional notes about how to deploy this on a live system.
 -->
 
 ## ⛏️ Architecture <a name = "architecture"></a>
+<!--
 - [MongoDB](https://www.mongodb.com/) - Database
 - [Express](https://expressjs.com/) - Server Framework
 - [VueJs](https://vuejs.org/) - Web Framework
 - [NodeJs](https://nodejs.org/en/) - Server Environment
+-->
+
+## TODO <a name ="todo"></a>
+
+- [ ] Deploy on Kubernetes
+- [ ] Like posts
+- [ ] comments under posts
+
 
 <!--
 ## ✍️ Authors <a name = "authors"></a>
