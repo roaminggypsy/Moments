@@ -18,7 +18,6 @@ public class ImageService {
     @Autowired
     private ImageMetadataRepository imageMetadataRepository;
 
-
     public ImageMetadata upload(MultipartFile file, String username) {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
 

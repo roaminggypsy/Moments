@@ -21,6 +21,7 @@ class PostList extends Component {
   loadUserFeed = () => {
     getFeed(this.state.currentUser.username, this.state.pagingState)
       .then(res => {
+        console.log(res);
         this.setState({
           hasMore: !res.last,
           feed: res.content,

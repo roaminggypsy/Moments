@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-@FeignClient(serviceId = "INSTA-GRAPH")
+@FeignClient(name = "INSTA-GRAPH")
 public interface GraphServiceClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/paginated/{username}/followers")

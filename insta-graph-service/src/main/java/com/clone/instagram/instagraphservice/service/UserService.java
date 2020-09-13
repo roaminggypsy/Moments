@@ -61,7 +61,7 @@ public class UserService {
                                 String.format("user %s not exists", user.getUsername())));
     }
 
-    //@Transactional
+    @Transactional
     public User follow(User follower, User following) {
         log.info("user {} will follow {}",
                 follower.getUsername(), following.getUsername());
