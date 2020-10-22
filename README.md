@@ -37,7 +37,8 @@ These instructions will get you a copy of the project up and running on your loc
 <!-- See [deployment](#deployment) for notes on how to deploy the project on a live system.--->
 
 1. Download the project
-2. In a terminal, execute 'docker-compose up'
+2. Edit docker-compose.yml, changed volumes mongodb and cassandra volumes to valid paths on your computer
+2. In a terminal, change directory to the root of this project, execute 'docker-compose up'
 3. Run all 7 services, and the React app
 
 [more detail regarding db setup coming up]
@@ -58,7 +59,7 @@ Give an example
 ```
 
 ### And coding style tests
-Explain what these tests test and whyy
+Explain what these tests test and why
 
 
 ```
