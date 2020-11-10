@@ -7,6 +7,8 @@ import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 
 @Data
 @RequiredArgsConstructor
@@ -33,4 +35,7 @@ public class Post {
 
     @NonNull
     private String caption;
+
+    //@NonNull
+    private HashSet<String> likerIds = new HashSet<>();
 }

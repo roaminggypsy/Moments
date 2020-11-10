@@ -48,6 +48,30 @@ public class PostApi {
         postService.deletePost(id, user.getName());
     }
 
+    @PostMapping("/posts/{id}/likes")
+    public ResponseEntity<?> likePost(@PathVariable("id") String id, @AuthenticationPrincipal Principal user) {
+        log.info("received a post request for liking the post id {} from user {}", id, user.getName());
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/posts/{id}/likes")
+                .buildAndExpand(id).toUri();
+        postService.likePost(id, user.getName());
+        return ResponseEntity
+                .created(location)
+                .body(new ApiResponse(true, user.getName() + " liked post " + id + " successfully"));
+    }
+
+    @DeleteMapping("/posts/{id}/likes")
+    public ResponseEntity<?> unlikePost(@PathVariable("id") String id, @AuthenticationPrincipal Principal user) {
+        log.info("received a post request for unliking the post id {} from user {}", id, user.getName());
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/posts/{id}/likes")
+                .buildAndExpand(id).toUri();
+        postService.unlikePost(id, user.getName());
+        return ResponseEntity
+                .created(location)
+                .body(new ApiResponse(true, user.getName() + " unliked post " + id + " successfully"));
+    }
+
     @GetMapping("/posts/me")
     public ResponseEntity<?> findCurrentUserPosts(@AuthenticationPrincipal Principal principal) {
         log.info("retrieving posts for user {}", principal.getName());

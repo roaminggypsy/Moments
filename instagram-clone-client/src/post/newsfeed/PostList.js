@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import { Avatar, Card, Icon, Input, List } from "antd";
-import InfiniteScroll from "react-infinite-scroller";
-import { getFeed } from "../../util/ApiUtil";
-import LoadingIndicator from "../../common/LoadingIndicator";
-import "./postlist.css";
+import React, { Component } from 'react';
+import { List } from 'antd';
+import Post from './Post';
+import InfiniteScroll from 'react-infinite-scroller';
+import { getFeed } from '../../util/ApiUtil';
+import LoadingIndicator from '../../common/LoadingIndicator';
+import './postlist.css';
 
 class PostList extends Component {
   state = {
@@ -11,7 +12,7 @@ class PostList extends Component {
     pagingState: null,
     hasMore: false,
     loading: false,
-    feed: []
+    feed: [],
   };
 
   componentDidMount = () => {
@@ -20,71 +21,47 @@ class PostList extends Component {
 
   loadUserFeed = () => {
     getFeed(this.state.currentUser.username, this.state.pagingState)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         this.setState({
           hasMore: !res.last,
           feed: res.content,
-          pagingState: res.pagingState
+          pagingState: res.pagingState,
         });
       })
-      .catch(error => {
-        console.log("error: " + error);
+      .catch((error) => {
+        console.log('error: ' + error);
       });
   };
 
   handleInfiniteOnLoad = () => {
     this.setState({
-      loading: true
+      loading: true,
     });
 
     let feed = this.state.feed;
 
     getFeed(this.state.currentUser.username, this.state.pagingState)
-      .then(res => {
+      .then((res) => {
         feed = feed.concat(res.content);
 
         this.setState({
           feed,
           hasMore: !res.last,
           pagingState: res.pagingState,
-          loading: false
+          loading: false,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({
           hasMore: false,
-          loading: false
+          loading: false,
         });
       });
   };
 
-  getPostRender = item => {
-    return (
-      <List.Item className="post-list-item ">
-        <Card bodyStyle={{ padding: 0 }} className="post-card">
-          <div className="post-user-container">
-            <Avatar
-              src={item.userProfilePic}
-              className="post-user-avatar-circle"
-            />
-            <span className="post-username">{item.username}</span>
-          </div>
-          <div>
-            <img alt="postId" className="post-img" src={item.imageUrl} />
-          </div>
-          <div className="post-actions">
-            <Icon type="heart" />
-            <Icon type="message" />
-            <Icon type="upload" />
-            <Icon type="book" className="post-action-book" />
-          </div>
-          <div className="comment-input-container">
-            <Input placeholder="Add comment" />
-          </div>
-        </Card>
-      </List.Item>
-    );
+  getPostRender = (item) => {
+    return <Post item={item} />;
   };
 
   render() {
@@ -98,7 +75,7 @@ class PostList extends Component {
       >
         <List
           dataSource={this.state.feed}
-          renderItem={item => this.getPostRender(item)}
+          renderItem={(item) => this.getPostRender(item)}
           split={false}
         />
       </InfiniteScroll>

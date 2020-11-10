@@ -9,6 +9,8 @@ import com.clone.instagram.instapostservice.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -49,6 +51,36 @@ public class PostService {
 
                     postRepository.delete(post);
                     postEventSender.sendPostDeleted(post);
+                    return post;
+                })
+                .orElseThrow(() -> {
+                    log.warn("post not found id {}", postId);
+                    return new ResourceNotFoundException(postId);
+                });
+    }
+
+    public void likePost(String postId, String username) {
+        log.info("user{} liking post {}", username, postId);
+
+        postRepository
+                .findById(postId)
+                .map(post -> {
+                    post.getLikerIds().add(username);
+                    return post;
+                })
+                .orElseThrow(() -> {
+                    log.warn("post not found id {}", postId);
+                    return new ResourceNotFoundException(postId);
+                });
+    }
+
+    public void unlikePost(String postId, String username) {
+        log.info("user{} unliking post {}", username, postId);
+
+        postRepository
+                .findById(postId)
+                .map(post -> {
+                    post.getLikerIds().remove(username);
                     return post;
                 })
                 .orElseThrow(() -> {
