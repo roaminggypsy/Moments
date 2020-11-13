@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.time.Instant;
+import java.util.HashSet;
 
 
 @Data
@@ -20,4 +21,6 @@ public class Post {
     private String lastModifiedBy;
     private String imageUrl;
     private String caption;
+    private HashSet<String> likerIds;
+    private boolean isLikedByCurrUser;
 }

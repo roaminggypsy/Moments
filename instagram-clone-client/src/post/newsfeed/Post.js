@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { likePost, unlikePost } from '../../util/ApiUtil';
 
 export default function Post(props) {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(props.item.likedByCurrUser);
 
   function changeLike(postId) {
     setIsLiked(!isLiked);
@@ -14,7 +14,7 @@ export default function Post(props) {
     }
   }
 
-  console.log(props.item);
+  console.log(props);
 
   return (
     <List.Item className='post-list-item '>

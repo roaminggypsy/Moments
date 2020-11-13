@@ -66,6 +66,7 @@ public class PostService {
                 .findById(postId)
                 .map(post -> {
                     post.getLikerIds().add(username);
+                    postRepository.save(post);
                     return post;
                 })
                 .orElseThrow(() -> {
@@ -81,6 +82,7 @@ public class PostService {
                 .findById(postId)
                 .map(post -> {
                     post.getLikerIds().remove(username);
+                    postRepository.save(post);
                     return post;
                 })
                 .orElseThrow(() -> {

@@ -50,7 +50,7 @@ public class FeedService {
                    .getPagingState().toString();
         }
 
-        List<Post> posts = getPosts(page);
+        List<Post> posts = getPosts(username, page);
 
         return SlicedResult
                 .<Post>builder()
@@ -60,7 +60,7 @@ public class FeedService {
                 .build();
     }
 
-    private List<Post> getPosts(Slice<UserFeed> page) {
+    private List<Post> getPosts(String username, Slice<UserFeed> page) {
 
         String token = authService.getAccessToken();
 
@@ -80,6 +80,11 @@ public class FeedService {
 
         posts.forEach(post -> post.setUserProfilePic(
                 usersProfilePics.get(post.getUsername())));
+
+        posts.forEach(post -> {
+            log.info("username");
+            post.setLikedByCurrUser(post.getLikerIds().contains(username));
+        });
 
         return posts;
     }

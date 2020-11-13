@@ -18,7 +18,6 @@ const request = (options) => {
   options = Object.assign({}, defaults, options);
 
   return fetch(options.url, options).then((response) =>
-
           response.json().then((json) => {
             console.log(json);
             if (!response.ok) {
@@ -26,8 +25,6 @@ const request = (options) => {
             }
             return json;
           })
-
-
   );
 };
 
