@@ -18,13 +18,14 @@ const request = (options) => {
   options = Object.assign({}, defaults, options);
 
   return fetch(options.url, options).then((response) =>
-          response.json().then((json) => {
-            console.log(json);
-            if (!response.ok) {
-              return Promise.reject(json);
-            }
-            return json;
-          })
+        response.json().then((json) => {
+          console.log(json);
+          if (!response.ok) {
+            return Promise.reject(json);
+          }
+          return json;
+        })
+
   );
 };
 
@@ -111,6 +112,18 @@ export function createPost(createPostRequest) {
     url: API_BASE_URL + '/post/posts',
     method: 'POST',
     body: JSON.stringify(createPostRequest),
+  });
+}
+
+export function createComment(postId, createCommentRequest) {
+  if (!localStorage.getItem(ACCESS_TOKEN)) {
+    return Promise.reject('No access token set.');
+  }
+
+  return request({
+    url: API_BASE_URL + '/post/posts/' + postId + '/comments',
+    method: 'POST',
+    body: JSON.stringify(createCommentRequest),
   });
 }
 

@@ -3,6 +3,7 @@ package com.clone.instagram.instapostservice.api;
 
 import com.clone.instagram.instapostservice.model.Post;
 import com.clone.instagram.instapostservice.payload.ApiResponse;
+import com.clone.instagram.instapostservice.payload.CommentRequest;
 import com.clone.instagram.instapostservice.payload.PostRequest;
 import com.clone.instagram.instapostservice.service.PostService;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,18 @@ public class PostApi {
                 .body(new ApiResponse(true, user.getName() + " liked post " + id + " successfully"));
     }
 
+    @PostMapping("/posts/{id}/comments")
+    public ResponseEntity<?> createComment(@RequestBody CommentRequest commentRequest, @PathVariable("id") String id, @AuthenticationPrincipal Principal user) {
+        log.info("received a post request for create a comment for the post with id {} from user {}", id, user.getName());
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/posts/{id}/comments")
+                .buildAndExpand(id).toUri();
+        postService.createComment(commentRequest, id, user.getName());
+        return ResponseEntity
+                .created(location)
+                .body(new ApiResponse(true, user.getName() + " created a comment for post " + id + " successfully"));
+    }
+
     @DeleteMapping("/posts/{id}/likes")
     public ResponseEntity<?> unlikePost(@PathVariable("id") String id, @AuthenticationPrincipal Principal user) {
         log.info("received a post request for unliking the post id {} from user {}", id, user.getName());
@@ -71,6 +84,8 @@ public class PostApi {
                 .created(location)
                 .body(new ApiResponse(true, user.getName() + " unliked post " + id + " successfully"));
     }
+
+
 
     @GetMapping("/posts/me")
     public ResponseEntity<?> findCurrentUserPosts(@AuthenticationPrincipal Principal principal) {
@@ -87,6 +102,7 @@ public class PostApi {
         log.info("retrieving posts for user {}", username);
 
         List<Post> posts = postService.postsByUsername(username);
+        log.info("found {}", posts.get(0).getComments().size());
         log.info("found {} posts for user {}", posts.size(), username);
 
         return ResponseEntity.ok(posts);
@@ -97,6 +113,9 @@ public class PostApi {
         log.info("retrieving posts for {} ids", ids.size());
 
         List<Post> posts = postService.postsByIdIn(ids);
+        for (Post post : posts) {
+            log.info("comments {}", post.getComments().size());
+        }
         log.info("found {} posts", posts.size());
 
         return ResponseEntity.ok(posts);

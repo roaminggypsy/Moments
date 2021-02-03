@@ -3,8 +3,11 @@ package com.clone.instagram.instapostservice.service;
 import com.clone.instagram.instapostservice.exception.NotAllowedException;
 import com.clone.instagram.instapostservice.exception.ResourceNotFoundException;
 import com.clone.instagram.instapostservice.messaging.PostEventSender;
+import com.clone.instagram.instapostservice.model.Comment;
 import com.clone.instagram.instapostservice.model.Post;
+import com.clone.instagram.instapostservice.payload.CommentRequest;
 import com.clone.instagram.instapostservice.payload.PostRequest;
+import com.clone.instagram.instapostservice.repository.CommentRepository;
 import com.clone.instagram.instapostservice.repository.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
     private PostEventSender postEventSender;
@@ -89,6 +95,33 @@ public class PostService {
                     log.warn("post not found id {}", postId);
                     return new ResourceNotFoundException(postId);
                 });
+    }
+
+    public Comment createComment(CommentRequest commentRequest, String postId, String username) {
+        log.info("creating comment {} for post {}", commentRequest.getComment(), postId);
+
+        Comment comment = new Comment(commentRequest.getComment());
+
+        comment = commentRepository.save(comment);
+
+        Comment finalComment = comment;
+        postRepository
+                .findById(postId)
+                .map(post -> {
+                    post.getComments().add(finalComment);
+                    postRepository.save(post);
+                    postEventSender.sendPostUpdated(post);
+                    return post;
+                })
+                .orElseThrow(() -> {
+                    log.warn("post not found id {}", postId);
+                    return new ResourceNotFoundException(postId);
+                });
+
+        log.info("comment {} for post {} is saved successfully for user {}",
+                comment.getId(), postId, comment.getUsername());
+
+        return comment;
     }
 
     public List<Post> postsByUsername(String username) {
